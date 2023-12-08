@@ -14,30 +14,41 @@ Eddy covariance (EC) retrievals of net ecosystem exchange (NEE) are difficult to
 
 ## Data
 
-Here is an overview of the dataset, how it was obtained and the preprocessing steps taken, with some plots!
+  As previously noted, the data consists of three datasets, each collected separately from various instruments shown in figure 1. EC measurements are taken using an open path sonic anemometer and the gas in analyzed using an infrared gas analyzer to identify various concentration levels. The sonic anemometer sits on top of the 57m high tower. EC data, also known as the flux data since the measurements are of gas concentration fluxes, and processed using EddyPro software. 
 
-![](assets/IMG/datapenguin.png){: width="500" }
+![](assets/IMG/Fig1.png)
 
-*Figure 1: Here is a caption for my diagram. This one shows a pengiun [1].*
+*Figure 1: Comprehensive field set up at La Selva Biological Station.*
+
+  Typically, flux data is processed in one of three averaging intervals: 15-minute, half hourly, or hourly. Each time interval has its own pros and cons; for example, the 15-minute time scale does the best job of capturing quick flux measurements, which is important during early morning convective events, but in turn, it’s noisier. Hourly averages, on the other hand, are much smoother, but miss important transitions. For this reason, I chose to analyze half hourly time intervals. It’s still likely that half hourly processing neglects to pick up on small timescale transitions, but it’s much less noisy than the 15-minute interval, making it easier to work with. Within EddyPro, I chose a maximum missing sample allowance of 30% and opted into a time lag correction for my data to maximize the covariance. This means that there’s a maximum of 30% missing samples in the output file, and if the number of missing values exceeds this number, then the input file will be skipped. Lastly, to calculate the turbulent flux, EddyPro performs block averaging, or Reynolds averaging, which calculates the mean and turbulent fluctuations from the mean as mean individual departures. The EddyPro output file contains data such as the turbulent fluxes and the respective quality control flags based on the turbulence conditions (see figure 2), storage flux estimations, friction velocity, wind speed, and many other parameters. 
+
+![](assets/IMG/Fig2.png)
+
+*Figure 2: Turbulent fluxes for sensible heat exchange, latent heat exchange, water (which should mimic the latent heat exchange), and carbon dioxide flux. A quiality control of 0 is good data, 1 is ok data, and 2 is data that the processing software thinks should be discarded. *
+
+The profile data are collected from various instruments ascending the tower and help constrain the storage flux as gases enter and exit the forest canopy (see figure 3). Profile systems are especially important to accompany top-of-tower sonic anemometer and infrared gas analyzer EC systems since storage fluxes can only be estimated from above the canopy. The data collected by the profile system includes gas concentrations and temperature, shown in figure 3. Calculating the storage flux from the profile incorporates the third dataset, the biometeorological data, which includes parameters such as temperate, pressure, photosynthetically active radiation (PAR), relative humidity, etc. By integrating the gas concentrations at each level of the profile and converting them to fluxes, I can calculate the profile storage flux and compare it to the EddyPro estimated storage flux. These fluxes align well, and help validate the data, which is then added to the turbulent fluxes and plotted based on PAR in light response curves (LRCs) (see figure 4). 
+
+![](assets/IMG/Fig3.png)![](assets/IMG/Fig3b.png)
+
+*Figure 3: Tower profile measurements for January 2, 2023. Tower not to scale.*
+
+![](assets/IMG/Fig4.png)
+
+*Figure 4: Light response curves for the data span of July 2022 - May 2023. The non-rectangular hyperbolic equation is shown below the curves.*
 
 ## Modelling
 
-Here are some more details about the machine learning approach, and why this was deemed appropriate for the dataset. 
+Bagging involves taking a sample of the original dataset but the data that’s randomly taken from the original dataset resets after each sample is drawn. It implies that the sunset is the same size as the original dataset. Bagging is important because it creates variability in a dataset based on the original dataset, that a machine learning model can then be applied to. The RFM contains random decision trees that form as much diversity as possible among individual trees. Each tress is trained on a different dataset thanks to bagging, and each tree can be trained on random patches, or features available at each node. These are a few of many ways to randomize the random forests. I’ll be using the decision trees for regression purposes, although they can be used for classification as well. Decision trees are easily understandable and can handle both discrete and continuous functions. Decision trees rely on a recursive algorithm and individual trees will continue growing, so they will overfit if left unsupervised. 
 
-The model might involve optimizing some quantity. You can include snippets of code if it is helpful to explain things.
-
-```python
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.datasets import make_classification
-X, y = make_classification(n_features=4, random_state=0)
-clf = ExtraTreesClassifier(n_estimators=100, random_state=0)
-clf.fit(X, y)
-clf.predict([[0, 0, 0, 0]])
-```
-
-This is how the method was developed.
+First, I bagged the dataset to allow for random forest regression and used a shallow decision tree with a maximum depth of 2. Following our homework exercise in our third homework, I modeled the data from a 100 decision tree ensemble, again with a maximum depth of 2. Then, using a new maximum depth of 5, I recomputed the random forest model which I compared to the bagging data to visualize how the model overfits the data. In addition to performing the random forest regression, I played around with various other regression fits with my data, to try and identify what fits worked well, and if I could simulate the non-rectangular hyperbolic fit with a different model. 
 
 ## Results
+
+Below are the results from the various regression model fits I applied to the LRCs as well as the random forest regression. 
+
+![](assets/IMG/Fig2.png)
+
+*Figure 5: Comprehensive field set up at La Selva Biological Station.*
 
 Figure X shows... [description of Figure X].
 
