@@ -46,15 +46,35 @@ First, I bagged the dataset to allow for random forest regression and used a sha
 
 Below are the results from the various regression model fits I applied to the LRCs as well as the random forest regression. 
 
-![](assets/IMG/Fig2.png)
+![](assets/IMG/Fig5.png)
 
-*Figure 5: Comprehensive field set up at La Selva Biological Station.*
+*Figure 5: NEE vs PAR light response curve with a linear regression.*
 
-Figure X shows... [description of Figure X].
+![](assets/IMG/Fig6.png)
+
+*Figure 6: NEE vs PAR light response curve with a quadratic regression.*
+
+![](assets/IMG/Fig7.png)
+
+*Figure 7: NEE vs PAR light response curve with a non-rectangular hyberbolic regression.*
+
+![](assets/IMG/Fig8a.png)
+
+*Figure 8: Decison tree regression from 100 trees using a maximum depth of 2.*
+
+![](assets/IMG/Fig9a.png)
+
+*Figure 9: Random forest regression from 100 trees using a maximum depth of 2.*
+
+![](assets/IMG/Fig10a.png)
+
+*Figure 10: Random forest regression compared to a bagging regressor.*
 
 ## Discussion
 
-From Figure X, one can see that... [interpretation of Figure X].
+  Of the linear regression, quadratic regression, and non-rectangular hyperbolic regression, the quadratic regression had the best fit with a residual of 0.41. The non-rectangular regression had a similar but slightly lower residual of 0.36 and the linear regression had a residual of 0.28. Typically, a non-rectangular regression is chosen for this data since plants are increasingly productive with more light until they reach a light saturation threshold, at which point no matter how much more light they receive, they’ve already reached peak productivity. This is because plants depend not just on light to photosynthesize, but also temperature and water availability. It’s not uncommon for plants to close their stomata – the pores on leaves that allow carbon dioxide to enter and water to escape when photosynthesizing—during peak hours of the day, since this is also around the hottest time of the day when less water is available. For this reason, it’s not surprising that the quadratic function has a larger residual, since this takes into account the small decrease on plant productivity at exceedingly high light levels. 
+
+  In Figure 8, the non-rectangular hyperbolic fit struggles more, and the decision tree regression is very choppy since the maximum depth is only two. The decision tree regression does a better job of representing the data when the slope is close to either 1 or 0, due to the jumps, or lack thereof. The random forest regression in Figure 9 does a better job of fitting to the data, but the error is still it’s since it’s a greedy model. In figure 10 when the maximum depth is increased to 5, the random model excessively overfits the data, but the bootstrap aggregation helps limit the dataset variance by averaging subsets of the data, meaning the model is less impacted by outliers and providing a better fit. 
 
 ## Conclusion
 
