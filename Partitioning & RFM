@@ -80,11 +80,9 @@ Below are the results from the various regression model fits I applied to the LR
 
 ## Conclusion
 
-Here is a brief summary. From this work, the following conclusions can be made:
-* first conclusion
-* second conclusion
+  The tropical carbon budget is crucial to understanding terrestrial ecosystem response to various climate forcing scenarios. The response of GPP to environmental stressors in tropical rainforests is a major knowledge gap (Anav, A. et al., 2015; Frankenberg, C. et al., 2011). Since NEE data is pivotal for benchmarking terrestrial productivity, integrating machine learning models with data measurements will strengthen robustness of photosynthetic relationships over larger scales, and allow quantifying GPP and photosynthesis of the entire tropical forest. Depicting accurate photosynthetic relationships will clarify ecosystem response to climate change and reduce the uncertainties of global climate model predictions (Sun et al., 2022).
 
-Here is how this work could be developed further in a future project.
+	Of the three regression fits, the quadratic fit had the highest residual due to the saturation and water stress plants encounters during the height of the day. The random forest regression overfits the data, but the bagging regressor makes the fit much smoother. Now that all months of data have been processed, a random forest model that could be used to predict future parameters ion the non-rectangular hyperbolic fit would be very useful, including how various meteorological parameters act as predictors and which parameters impact the regression the most. 
 
 ## References
 
